@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/id_invoice_page.dart';
 
 class business_info extends StatefulWidget {
-  const business_info({super.key});
+  const business_info({super.key, required this.businessName, required this.businessEmailAddress, required this.businessPhone, required this.businessBillingAddress, required this.businessWebsite});
+
+  final String businessName;
+  final String businessEmailAddress;
+  final num businessPhone;
+  final String businessBillingAddress;
+ final  String businessWebsite;
 
   @override
   State<business_info> createState() => _business_infoState();
@@ -10,10 +16,33 @@ class business_info extends StatefulWidget {
 }
 
 class _business_infoState extends State<business_info> {
+  late String businessName;
+  late String businessEmailAddress;
+  late num businessPhone;
+  late String businessBillingAddress;
+  late  String businessWebsite;
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _controller = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _businessNameController = TextEditingController();
+  final TextEditingController _businessEmailContorller = TextEditingController();
+  final TextEditingController _businessPhoneController = TextEditingController();
+  final TextEditingController _businessBillingContorller = TextEditingController();
+  final TextEditingController _businessWebsiteContorller = TextEditingController();
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    businessName=widget.businessName;
+    businessEmailAddress=widget.businessEmailAddress;
+    businessPhone=widget.businessPhone;
+    businessBillingAddress=widget.businessBillingAddress;
+    businessWebsite=widget.businessWebsite;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +50,7 @@ class _business_infoState extends State<business_info> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const id_info()),
-              );
+              Navigator.pop(context);
 
               print('Back button pressed');
             },
@@ -43,9 +69,39 @@ class _business_infoState extends State<business_info> {
                 if (_formKey.currentState!.validate()) {
                   // If the form is valid, proceed with your submission logic
                   print('Form is valid');
+
+                  // Retrieving the values from the controllers
+                  String businessName = _businessNameController.text;
+                   String businessEmailAddress= _businessEmailContorller.text;
+                 String businessPhone = _businessPhoneController.text ;
+                 String  businessBillingAddress = _businessBillingContorller.text;
+                  String businessWebsite = _businessWebsiteContorller.text;
+
+                  Map<String, dynamic> invoiceBusinessData = {
+                    'businessName': businessName,
+                    'businessEmailAddress': businessEmailAddress,
+                    'businessPhone': businessPhone.toString(), // Convert numeric phone to String
+                    'businessBillingAddress': businessBillingAddress,
+                    'businessWebsite': businessWebsite,
+                  };
+
+
+                  // Print values to console (for debugging purposes, can be removed)
+                  print('Invoice Number: $businessName');
+                  print('Creation Date: $businessEmailAddress');
+                  print('Due Date: $businessPhone');
+                  print('Due Terms: $businessBillingAddress');
+                  print('Invoice Title Name: $businessWebsite');
+
+                  // Use Navigator.pop to return the data to the previous screen
+                  Navigator.pop(context, invoiceBusinessData);
+                } else {
+                  // Form validation failed
+                  print('Form is not valid');
                 }
               },
-            ),
+    ),
+
           ],
         ),
         body: SingleChildScrollView(
@@ -55,7 +111,7 @@ class _business_infoState extends State<business_info> {
               Padding(
                 padding: const EdgeInsets.only(right: 17.0, left: 17.0, top: 20.0),
                 child: Container(
-                  height: 700.0, // Adjust container height as needed
+                  height: 1000.0, // Adjust container height as needed
                   width: 400.0,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -111,10 +167,10 @@ class _business_infoState extends State<business_info> {
                                 border: InputBorder.none,
                                 hintText: 'Enter business name',
                               ),
-                              style: TextStyle(fontSize: 16.0),
+                              controller:_businessNameController,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'Please enter the business name';
                                 }
                                 return null;
                               },
@@ -151,6 +207,8 @@ class _business_infoState extends State<business_info> {
                               borderRadius: BorderRadius.circular(5.0),
                             ),
                             child: TextFormField(
+
+                              controller:_businessEmailContorller,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Enter business email address',
@@ -158,11 +216,14 @@ class _business_infoState extends State<business_info> {
                               style: TextStyle(fontSize: 16.0),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'Please enter an email address';
+                                } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                  return 'Enter a valid email address';
                                 }
                                 return null;
                               },
                             ),
+
                           ),
                           SizedBox(height: 20.0),
                           // Create Date Field
@@ -195,18 +256,24 @@ class _business_infoState extends State<business_info> {
                               borderRadius: BorderRadius.circular(5.0),
                             ),
                             child: TextFormField(
+
+                              controller:_businessPhoneController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Enter business phone number',
                               ),
+                              keyboardType: TextInputType.phone, // Suggests a numeric input keyboard
                               style: TextStyle(fontSize: 16.0),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'Please enter a phone number';
+                                } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                                  return 'Enter a valid 10-digit phone number';
                                 }
                                 return null;
                               },
                             ),
+
                           ),
 
                           SizedBox(height: 20.0),
@@ -239,19 +306,23 @@ class _business_infoState extends State<business_info> {
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5.0),
                             ),
-                            child: TextFormField(
+                            child: // For Address Line 1
+                            TextFormField(
+
+                              controller:_businessBillingContorller,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Enter address line1',
                               ),
-                              style: TextStyle(fontSize: 16.0),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'Please enter the billing address';
                                 }
                                 return null;
                               },
                             ),
+
+
                           ),
                           SizedBox(height: 5.0),
                           Container(
@@ -261,19 +332,21 @@ class _business_infoState extends State<business_info> {
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5.0),
                             ),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Enter address line2',
-                              ),
-                              style: TextStyle(fontSize: 16.0),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
-                                }
-                                return null;
-                              },
-                            ),
+                            // child: // For Address Line 1
+                            // TextFormField(
+                            //   decoration: const InputDecoration(
+                            //     border: InputBorder.none,
+                            //     hintText: 'Enter address line2',
+                            //   ),
+                            //   validator: (value) {
+                            //     if (value == null || value.isEmpty) {
+                            //       return 'Please enter the billing address';
+                            //     }
+                            //     return null;
+                            //   },
+                            // ),
+// Address Line 2 is optional in many cases, adjust according to your need
+
                           ),
 
                           SizedBox(height: 20.0),
@@ -307,18 +380,21 @@ class _business_infoState extends State<business_info> {
                               borderRadius: BorderRadius.circular(5.0),
                             ),
                             child: TextFormField(
+
+                              controller:_businessWebsiteContorller,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Enter business website',
                               ),
-                              style: TextStyle(fontSize: 16.0),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter some text';
+                                  return 'Please enter the business website';
                                 }
+                                // Optional: Add specific validation for website URL format if required
                                 return null;
                               },
                             ),
+
                           ),
 
                         ],

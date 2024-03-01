@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:invoice/presentation/view/details_page/invoice_info.dart';
+import 'package:invoice/presentation/view/invoice_app.dart';
 
 class payment_info extends StatefulWidget {
   const payment_info({super.key});
@@ -74,7 +75,7 @@ class _payment_infoState extends State<payment_info> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                invoice_info()), // Navigate to InvoiceInfo page
+                                TestApp()), // Navigate to InvoiceInfo page
                       );
                     },
                     child: const Padding(

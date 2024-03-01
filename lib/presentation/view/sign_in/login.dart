@@ -10,9 +10,7 @@ class login extends StatefulWidget {
 }
 
 class _loginState extends State<login> {
-  final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
+
 
   bool _validateEmail(String email) {
     // Regular expression for validating email
@@ -23,8 +21,10 @@ class _loginState extends State<login> {
 
   @override
   Widget build(BuildContext context) {
+    final Map <String,String> logincredentials={'nandhini':'nandhini@123'};
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    String _email = '', _password = '';
+    final TextEditingController _emailController=TextEditingController();
+    final TextEditingController _passwordController=TextEditingController();
     // return Scaffold(
     //     body: Container(
     //    child: Lottie.asset('assets/animations/login_invoice.json')
@@ -41,17 +41,18 @@ class _loginState extends State<login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                     Lottie.asset('animations/login_invoice.json'),
-                  Text(
+                  const Text(
                     'Login',
                     style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.email),
                     ),
+                    controller: _emailController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -59,7 +60,6 @@ class _loginState extends State<login> {
                       // Add your email validation logic here
                       return null;
                     },
-                    onSaved: (value) => _email = value!,
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
@@ -68,8 +68,9 @@ class _loginState extends State<login> {
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.lock),
                     ),
+                    controller: _passwordController,
                     obscureText: true,
-                    validator: (value) {
+                   validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
                       }
@@ -78,19 +79,26 @@ class _loginState extends State<login> {
                       }
                       return null;
                     },
-                    onSaved: (value) => _password = value!,
+
                   ),
                   SizedBox(height: 30.0),
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const TestApp()),
-                        );
-                        // Perform login action
-                        print('Email: $_email, Password: $_password');
+                        String username = _emailController.text;
+                        String password = _passwordController.text;
+
+                        if (logincredentials.containsKey(username) && logincredentials[username] == password) {
+                          // Credentials are correct, navigate to the next page
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => TestApp())
+                          );
+                        } else {
+                          // Show an error message if the credentials are incorrect
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Invalid credentials')),
+                          );
+                        }
                       }
                     },
                     child: Text('Login'),
@@ -98,6 +106,7 @@ class _loginState extends State<login> {
                       minimumSize: Size(double.infinity, 50), // Full width button
                     ),
                   ),
+
                   // Add "Forgot password" or "Create account" links here if needed
                 ],
               ),

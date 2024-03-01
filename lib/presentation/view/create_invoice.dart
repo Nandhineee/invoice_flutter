@@ -17,13 +17,11 @@ class _CreateScreenState extends State<CreateScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Text('<', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const login()),
-            );
-            print('Floating Action Button Pressed');
-          },
+    onPressed: () {
+    Navigator.pop(context);
+    },
+
+
         ),
         title: const Center(
             child: Text("Create Invoice", style: TextStyle(fontSize: 30.0, color: Colors.black),)
