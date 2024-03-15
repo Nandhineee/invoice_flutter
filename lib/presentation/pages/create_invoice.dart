@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invoice/presentation/view/details_page/invoice_info.dart';
-import 'package:invoice/presentation/view/sign_in/login.dart';
+import 'package:invoice/presentation/pages/details_page/invoice_info.dart';
+import 'package:invoice/presentation/pages/sign_in/login.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/id_invoice_page.dart';
 
 class CreateScreen extends StatefulWidget {

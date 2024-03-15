@@ -1,26 +1,31 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice/domain/models/invoice_list.dart';
 import 'package:invoice/domain/models/item.dart';
-import 'package:invoice/presentation/view/details_page/business_info.dart';
-import 'package:invoice/presentation/view/details_page/client_info.dart';
-import 'package:invoice/presentation/view/details_page/invoice_info.dart';
-import 'package:invoice/presentation/view/details_page/item_info.dart';
-import 'package:invoice/presentation/view/invoice_pdf/pdf_file.dart';
-import 'package:invoice/presentation/view/tabs/paid_invoice.dart';
+import 'package:invoice/presentation/pages/details_page/business_info.dart';
+import 'package:invoice/presentation/pages/details_page/client_info.dart';
+import 'package:invoice/presentation/pages/details_page/invoice_info.dart';
+import 'package:invoice/presentation/pages/details_page/item_info.dart';
+import 'package:invoice/presentation/pages/invoice_pdf/pdf_file.dart';
+import 'package:invoice/presentation/pages/tabs/paid_invoice.dart';
+import 'package:invoice/presentation/providers/invoiceProvider.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/item_details.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/payment.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/user_info.dart';
 
-class id_info extends StatefulWidget {
+class id_info extends ConsumerStatefulWidget {
   const id_info({super.key});
 
   @override
-  State<id_info> createState() => _id_infoState();
+  ConsumerState <id_info> createState() => _id_infoState();
 }
 
-class _id_infoState extends State<id_info> {
+class _id_infoState extends ConsumerState<id_info> {
   late List<Invoice> invoiceList;
+  late List<Item> itemsList=[];
   late String invoiceId = "";
   String invoiceName = "";
   String price = "";
@@ -85,6 +90,7 @@ class _id_infoState extends State<id_info> {
       context,
       MaterialPageRoute(
           builder: (context) => invoicepdf(
+
                 invoiceId: invoiceId,
                 invoiceName: invoiceName,
                 dueTerms: dueTerms,
@@ -107,7 +113,12 @@ class _id_infoState extends State<id_info> {
                 quantity: quantity,
                 itemDiscount: itemDiscount,
                 itemTax: itemTax,
-              )),
+
+              )
+
+
+      ),
+
     );
     print("Hellow $result");
     setState(() {});
@@ -508,6 +519,12 @@ class _id_infoState extends State<id_info> {
                       const SizedBox(height: 20.0),
                       InkWell(
                         onTap: () async {
+                          Item itemData =
+                          Item
+                            (itemId,
+                              itemName,itemPrice,quantity,itemDiscount,itemTax);
+                          itemsList.add(itemData);
+
                           final Map<String, dynamic>? result =
                               await Navigator.push<Map<String, dynamic>>(
                             context,
@@ -887,30 +904,30 @@ class _id_infoState extends State<id_info> {
                         ],
                       ),
 
-                      SizedBox(
-                        height: 20.0,
-                        width: 200.0,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.indigo,
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Total',
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.indigo[900])),
-                            Text('0.00',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white)),
-                          ],
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 20.0,
+                      //   width: 200.0,
+                      // ),
+                      // Container(
+                      //   padding: EdgeInsets.all(8.0),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.indigo,
+                      //     borderRadius: BorderRadius.circular(5.0),
+                      //   ),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: <Widget>[
+                      //       Text('Total',
+                      //           style: TextStyle(
+                      //               fontSize: 16.0,
+                      //               fontWeight: FontWeight.bold,
+                      //               color: Colors.indigo[900])),
+                      //       Text('0.00',
+                      //           style: TextStyle(
+                      //               fontSize: 16, color: Colors.white)),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -922,6 +939,12 @@ class _id_infoState extends State<id_info> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+
+          Item itemData =
+          Item
+            (itemId,
+              itemName,itemPrice,quantity,itemDiscount,itemTax);
+          itemsList.add(itemData);
           Invoice invoiceData = Invoice(
               invoiceId,
               invoiceName,
@@ -945,10 +968,11 @@ class _id_infoState extends State<id_info> {
               tax, [
             Item(itemId, itemName, quantity, itemPrice, itemDiscount, itemTax)
           ]);
-          setState(() {
-            invoice.add(invoiceData);
-
-          });
+          
+          ref.read(invoiceDetailsProvider.notifier).createInvoice(invoiceData);
+          // setState(() {
+          //   invoice.add(invoiceData);
+          // });
 
 
           navigateToAddTodoPage(context);
@@ -969,12 +993,7 @@ class _id_infoState extends State<id_info> {
           print('floating Shipping Address: $clientShippingAddress');
           print('floating discount:$discount');
           print('floating tax:$tax');
-          print('$itemId');
-          print('item:$itemName');
-          print('num $itemPrice');
-          print('num $quantity');
-          print('num $itemDiscount');
-          print('num $itemTax');
+         print('item:$itemsList');
         },
         // The add symbol
         backgroundColor: Colors.blue[900],

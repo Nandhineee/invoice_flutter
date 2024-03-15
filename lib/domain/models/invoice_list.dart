@@ -1,6 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:invoice/domain/models/dateTieFormat.dart';
 import 'package:invoice/domain/models/item.dart';
+
+
+
+const String invoiceTableName='invoice';
+const String invoiceTableId='invoiceId';
+const String invoiceCreateName='invoiceName';
+const String invoicePrice='price';
+const String invoicePaid='paid';
+const String invoiceCreatedDate='createdDate';
+const String  invoiceDueDate= 'DueDate';
+const String invoiceDueTerms='dueTerms';
+const String invoiceBusinessName='businessName';
+const String invoiceBusinessEmailAddress='businessEmailAddress';
+const String invoiceBusinessPhone = 'businessPhone';
+const String invoiceBusinessBillingAddress='businessBillingAddress';
+const  String invoiceBusinessWebsite='businessWebsite';
+const String invoiceClientName='clientName';
+const String invoiceClientEmailAddress='clientEmailAddress';
+const String invoiceClientPhone= 'clientPhone';
+const String invoiceClientBillingAddress ='clientBillingAddress';
+const String invoiceClientShippingAddress ='clientShippingAddress';
+const String invoiceDiscount='discount';
+const String invoiceTax='tax';
+const String invoiceShipping='shipping';
 
 class Invoice {
   String invoiceId;
@@ -47,8 +73,74 @@ class Invoice {
     this.shipping,
     this.tax,
     this.items,
-  ); // Initialize items list as empty by default
+  );
+
+
+
+
+
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = {
+      invoiceTableId:invoiceId.toString(),
+      invoiceCreateName:invoiceName,
+      invoicePrice:price ,
+      invoicePaid:paid ? 1 :0,
+      invoiceCreatedDate:createdDate.toString(),
+      invoiceDueDate: DueDate.toString(),
+      invoiceDueTerms:dueTerms,
+      invoiceBusinessName:businessName,
+      invoiceBusinessEmailAddress:businessEmailAddress,
+      invoiceBusinessPhone : businessPhone.toString(),
+      invoiceBusinessBillingAddress:businessBillingAddress,
+      invoiceBusinessWebsite:businessWebsite,
+      invoiceClientName:clientName,
+      invoiceClientEmailAddress:clientEmailAddress,
+      invoiceClientPhone: clientPhone.toString(),
+      invoiceClientBillingAddress :clientBillingAddress,
+      invoiceClientShippingAddress :clientShippingAddress,
+      invoiceDiscount:discount,
+      invoiceTax:tax,
+      invoiceShipping:shipping,
+
+    };
+    return map;
+  }
+
+
+  factory Invoice.fromJson(Map<String, dynamic> json) {
+    return Invoice(
+      json[invoiceTableId] ,
+      json[invoiceCreateName] ,
+      json[invoicePrice],
+      json[invoicePaid] ,
+      json[invoiceCreatedDate],
+      json[invoiceCreatedDate],
+      json[invoiceDueDate],
+      json[invoiceDueTerms],
+      json[invoiceBusinessName],
+      json[invoiceBusinessEmailAddress],
+      json[invoiceBusinessPhone],
+      json[invoiceBusinessBillingAddress],
+      json [invoiceBusinessWebsite],
+      json[invoiceClientName],
+      json[invoiceClientEmailAddress],
+      json [invoiceClientPhone],
+      json [invoiceClientBillingAddress],
+      json [invoiceClientShippingAddress],
+      json [invoiceDiscount],
+      json[invoiceTax],
+      json[invoiceShipping]
+
+
+    );
+  }
+
+
+
 }
+
+
 
 List<Invoice> invoice = [
   Invoice(

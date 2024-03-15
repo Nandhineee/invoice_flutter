@@ -7,4 +7,6 @@ class Item {
   num itemTax;
 
   Item(this.itemId, this.itemName, this.quantity, this.itemPrice,this.itemDiscount,this.itemTax);
+
+
 }

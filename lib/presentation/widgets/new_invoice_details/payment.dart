@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:invoice/presentation/view/details_page/invoice_info.dart';
-import 'package:invoice/presentation/view/invoice_app.dart';
+import 'package:invoice/presentation/pages/details_page/invoice_info.dart';
+import 'package:invoice/presentation/pages/invoice_app.dart';
 
 class payment_info extends StatefulWidget {
   const payment_info({super.key});

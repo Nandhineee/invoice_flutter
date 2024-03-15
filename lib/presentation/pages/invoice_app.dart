@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:invoice/domain/models/invoice_list.dart';
-import 'package:invoice/presentation/view/sign_in/login.dart';
-import 'package:invoice/presentation/view/tabs/all_invoice.dart';
-import 'package:invoice/presentation/view/create_invoice.dart';
-import 'package:invoice/presentation/view/tabs/paid_invoice.dart';
-import 'package:invoice/presentation/view/tabs/unpaid_invoice.dart';
+import 'package:invoice/presentation/pages/sign_in/login.dart';
+import 'package:invoice/presentation/pages/sign_in/register.dart';
+import 'package:invoice/presentation/pages/tabs/all_invoice.dart';
+import 'package:invoice/presentation/pages/create_invoice.dart';
+import 'package:invoice/presentation/pages/tabs/paid_invoice.dart';
+import 'package:invoice/presentation/pages/tabs/unpaid_invoice.dart';
 
 
 class MyApp extends StatefulWidget {
@@ -17,9 +18,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return  const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TestApp(),
+      home: Login(),
     );
 
 
@@ -52,7 +53,7 @@ class _TestAppState extends State<TestApp> with SingleTickerProviderStateMixin {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const login()),
+              MaterialPageRoute(builder: (context) => const Login()),
             );
             print('Floating Action Button Pressed');
           },

@@ -24,7 +24,7 @@ class invoicepdf extends StatefulWidget {
   final String itemName;
   final num itemPrice;
   final num quantity;
- final  num itemDiscount;
+  final  num itemDiscount;
   final num itemTax;
 
 
@@ -51,7 +51,7 @@ class _invoicepdfState extends State<invoicepdf> {
   late String tax;
   late String shipping;
   late String itemId;
- late  String itemName;
+  late  String itemName;
   late num itemPrice;
   late num quantity;
   late num itemDiscount;
@@ -84,17 +84,17 @@ class _invoicepdfState extends State<invoicepdf> {
     businessEmailAddress=widget.businessEmailAddress;
     businessBillingAddress=widget.businessBillingAddress;
     clientPhone=widget.clientPhone;
-     clientShippingAddress=widget.clientShippingAddress;
+    clientShippingAddress=widget.clientShippingAddress;
     clientBillingAddress=widget.clientBillingAddress;
     clientEmailAddress=widget.clientEmailAddress;
-      discount=widget.discount;
-     tax=widget.tax;
+    discount=widget.discount;
+    tax=widget.tax;
     shipping=widget.shipping;
-     itemId=widget.itemId;
-     itemName=widget.itemName;
+    itemId=widget.itemId;
+    itemName=widget.itemName;
     itemPrice=widget.itemPrice;
-     quantity=widget.quantity;
-     itemDiscount=widget.itemDiscount;
+    quantity=widget.quantity;
+    itemDiscount=widget.itemDiscount;
     itemTax=widget.itemTax;
 
 
