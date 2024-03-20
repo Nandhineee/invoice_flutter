@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:invoice/domain/models/invoice_list.dart';
+import 'package:invoice/presentation/providers/invoiceProvider.dart';
 
-class paid extends StatefulWidget {
+class paid extends ConsumerStatefulWidget {
   const paid({super.key});
 
   @override
-  State<paid> createState() => _paidState();
+  ConsumerState <paid> createState() => _paidState();
 }
 
-class _paidState extends State<paid> {
-  late List<Invoice> invoices;
+class _paidState extends ConsumerState<paid> {
+  late List<Invoice> paidInvoices=[];
+
+
+
 
   @override
   void initState() {
+
+     paidInvoices = ref.read(invoiceDetailsProvider.notifier).getPaidInvoices(true);
+
     super.initState();
-    invoices = invoice;
   }
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class _paidState extends State<paid> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: invoice.length,
+            itemCount: paidInvoices.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.all(8.0),
@@ -63,13 +70,13 @@ class _paidState extends State<paid> {
                             // Align text to the start of the column
                             children: <Widget>[
                               Text(
-                                invoice[index].invoiceName,
-                                style: TextStyle(
+                                paidInvoices[index].invoiceName,
+                                style: const  TextStyle(
                                   fontSize: 20.0, // Size of the first text
                                 ),
                               ),
                               Text(
-                                invoice[index].invoiceId,
+                                paidInvoices[index].id,
                                 // Your additional text
                                 style: const TextStyle(
                                   fontSize:
@@ -84,17 +91,28 @@ class _paidState extends State<paid> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.edit, // Edit icon
-                              size: 20.0, // Adjust the size as per your need
-                              color: Colors.black, // Adjust the color as per your need
+                            child: IconButton(
+                              icon: const  Icon(
+                                Icons.delete,
+                                size: 20.0,
+                                color: Colors.black,
+                              ),
+                              onPressed: () async {
+                                await ref.read(invoiceDetailsProvider.notifier).deleteById(paidInvoices[index].id);
+                                await ref.read(invoiceDetailsProvider.notifier).getInvoices();
+
+                                setState(() {
+
+                                });
+
+                              },
                             ),
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(),
                             child: Text(
-                              '₹${invoice[index].price.toString()}',
+                              '₹${paidInvoices[index].price.toString()}',
                               style: const TextStyle(
                                 fontSize: 15.0, // You can adjust the size as per your need
                               ),

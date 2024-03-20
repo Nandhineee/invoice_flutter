@@ -12,6 +12,7 @@ import 'package:invoice/presentation/pages/details_page/item_info.dart';
 import 'package:invoice/presentation/pages/invoice_pdf/pdf_file.dart';
 import 'package:invoice/presentation/pages/tabs/paid_invoice.dart';
 import 'package:invoice/presentation/providers/invoiceProvider.dart';
+import 'package:invoice/presentation/providers/itemProvider.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/item_details.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/payment.dart';
 import 'package:invoice/presentation/widgets/new_invoice_details/user_info.dart';
@@ -32,7 +33,7 @@ class _id_infoState extends ConsumerState<id_info> {
   DateTime createdDate = DateTime.now();
   late DateTime DueDate = DateTime.now();
   late String dueTerms = "";
-  num clientPhone = 0;
+  int clientPhone = 0;
   String clientBillingAddress = "";
   String clientShippingAddress = "";
   String clientName = "";
@@ -40,18 +41,19 @@ class _id_infoState extends ConsumerState<id_info> {
 
   String businessName = "";
   String businessEmailAddress = "";
-  num businessPhone = 0;
+  int businessPhone = 0;
   String businessBillingAddress = "";
   String businessWebsite = "";
   String discount = "";
   String tax = "";
   String shipping = "";
-  String itemId = "";
+  num itemId = 0;
   String itemName = "";
   num itemPrice = 0;
   num quantity = 0;
   num itemDiscount = 0;
   num itemTax = 0;
+
 
   @override
   void initState() {
@@ -79,13 +81,14 @@ class _id_infoState extends ConsumerState<id_info> {
     quantity = quantity;
     itemDiscount = itemDiscount;
     itemTax = itemTax;
+
   }
 
   final TextEditingController _discountController = TextEditingController();
   final TextEditingController _taxController = TextEditingController();
   final TextEditingController _shippingController = TextEditingController();
 
-  void navigateToAddTodoPage(BuildContext context) async {
+  void navigateToAddTodoPage(BuildContext context, List<Item> itemsList) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -107,12 +110,14 @@ class _id_infoState extends ConsumerState<id_info> {
                 discount: discount,
                 tax: tax,
                 shipping: shipping,
-                itemId: itemId,
-                itemName: itemName,
-                itemPrice: itemPrice,
-                quantity: quantity,
-                itemDiscount: itemDiscount,
-                itemTax: itemTax,
+            itemList:itemsList,
+
+            // itemId: itemId.toString() ,
+                // itemName: itemName,
+                // itemPrice: itemPrice,
+                // quantity: quantity,
+                // itemDiscount: itemDiscount,
+                // itemTax: itemTax,
 
               )
 
@@ -298,7 +303,7 @@ class _id_infoState extends ConsumerState<id_info> {
                                       padding: EdgeInsets.only(
                                           top: 05.0, bottom: 05.0),
                                       child:
-                                          Icon(Icons.mail_outline, size: 23.0),
+                                      Icon(Icons.mail_outline, size: 23.0),
                                     ),
                                     // Profile icon at the left end
                                     SizedBox(width: 8.0),
@@ -320,18 +325,18 @@ class _id_infoState extends ConsumerState<id_info> {
                                           color: Colors.blue[900]),
                                       onPressed: () async {
                                         final Map<String, dynamic>? result =
-                                            await Navigator.push<
-                                                Map<String, dynamic>>(
+                                        await Navigator.push<
+                                            Map<String, dynamic>>(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => business_info(
                                               businessName: businessName,
                                               businessPhone: businessPhone,
                                               businessEmailAddress:
-                                                  businessEmailAddress,
+                                              businessEmailAddress,
                                               businessWebsite: businessWebsite,
                                               businessBillingAddress:
-                                                  businessBillingAddress,
+                                              businessBillingAddress,
                                             ),
                                           ),
                                         );
@@ -344,20 +349,20 @@ class _id_infoState extends ConsumerState<id_info> {
                                             businessWebsite =
                                                 result['businessWebsite'] ?? '';
                                             businessEmailAddress = result[
-                                                    'businessEmailAddress'] ??
+                                            'businessEmailAddress'] ??
                                                 '';
                                             businessBillingAddress = result[
-                                                    'businessBillingAddress'] ??
+                                            'businessBillingAddress'] ??
                                                 '';
                                             // Use null-aware operators to provide a default value if the result is null
                                             businessPhone = result.containsKey(
-                                                        'businessPhone') &&
-                                                    result['businessPhone'] !=
-                                                        null
+                                                'businessPhone') &&
+                                                result['businessPhone'] !=
+                                                    null
                                                 ? int.tryParse(
-                                                        result['businessPhone']
-                                                            .toString()) ??
-                                                    0
+                                                result['businessPhone']
+                                                    .toString()) ??
+                                                0
                                                 : 0;
                                             // Repeat the pattern for other nullable fields as needed
                                           });
@@ -393,7 +398,7 @@ class _id_infoState extends ConsumerState<id_info> {
                                       padding: EdgeInsets.only(
                                           top: 16.0, bottom: 1.0),
                                       child:
-                                          Icon(Icons.receipt_long, size: 23.0),
+                                      Icon(Icons.receipt_long, size: 23.0),
                                     ),
                                     // Icon with specific padding
                                     const SizedBox(width: 8.0),
@@ -416,19 +421,19 @@ class _id_infoState extends ConsumerState<id_info> {
                                           color: Colors.blue[900]),
                                       onPressed: () async {
                                         final Map<String, dynamic>? result =
-                                            await Navigator.push<
-                                                Map<String, dynamic>>(
+                                        await Navigator.push<
+                                            Map<String, dynamic>>(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => client_info(
                                               clientName: clientName,
                                               clientPhone: clientPhone,
                                               clientEmailAddress:
-                                                  clientEmailAddress,
+                                              clientEmailAddress,
                                               clientShippingAddress:
-                                                  clientShippingAddress,
+                                              clientShippingAddress,
                                               clientBillingAddress:
-                                                  clientBillingAddress,
+                                              clientBillingAddress,
                                             ),
                                           ),
                                         );
@@ -443,20 +448,20 @@ class _id_infoState extends ConsumerState<id_info> {
                                                     'nandhini@gmail.com';
 
                                             clientShippingAddress = result[
-                                                    'clientShippingAddress'] ??
+                                            'clientShippingAddress'] ??
                                                 '';
                                             clientBillingAddress = result[
-                                                    'clientBillingAddress'] ??
+                                            'clientBillingAddress'] ??
                                                 '';
                                             // Use null-aware operators to provide a default value if the result is null
                                             clientPhone = result.containsKey(
-                                                        'clientPhone') &&
-                                                    result['clientPhone'] !=
-                                                        null
+                                                'clientPhone') &&
+                                                result['clientPhone'] !=
+                                                    null
                                                 ? int.tryParse(
-                                                        result['clientPhone']
-                                                            .toString()) ??
-                                                    0
+                                                result['clientPhone']
+                                                    .toString()) ??
+                                                0
                                                 : 0;
                                             // Repeat the pattern for other nullable fields as needed
                                           });
@@ -519,18 +524,14 @@ class _id_infoState extends ConsumerState<id_info> {
                       const SizedBox(height: 20.0),
                       InkWell(
                         onTap: () async {
-                          Item itemData =
-                          Item
-                            (itemId,
-                              itemName,itemPrice,quantity,itemDiscount,itemTax);
-                          itemsList.add(itemData);
+
 
                           final Map<String, dynamic>? result =
                               await Navigator.push<Map<String, dynamic>>(
                             context,
                             MaterialPageRoute(
                               builder: (context) => item_info(
-                                itemId: itemId,
+                                itemId:itemId,
                                 itemName: itemName,
                                 itemPrice: itemPrice,
                                 itemDiscount: itemDiscount,
@@ -539,12 +540,12 @@ class _id_infoState extends ConsumerState<id_info> {
                               ),
                             ),
                           );
-
+                         print("$result textfield");
                           // Check if the result is not null and then update the state variables
                           if (result != null) {
                             setState(() {
                               itemName = result['itemName'] ?? '';
-                              itemId = result['itemId'] ?? '';
+                              itemId=0;
 
                               // Parse itemTax as a num, defaulting to 0 if parsing fails or if the field is absent
                               String itemTaxStr = result['itemTax'] ?? '';
@@ -558,6 +559,14 @@ class _id_infoState extends ConsumerState<id_info> {
                               // Parse quantity as a num, defaulting to 0 if parsing fails or if the field is absent
                               String quantityStr = result['quantity'] ?? '';
                               quantity = num.tryParse(quantityStr) ?? 0;
+
+                              Item itemData =
+                              Item
+                                (invoiceId,itemId,
+                                  itemName,itemPrice,quantity,itemDiscount,itemTax);
+                              itemsList.add(itemData);
+                              print("$itemData tick");
+
                             });
                           }
                         },
@@ -933,20 +942,17 @@ class _id_infoState extends ConsumerState<id_info> {
                 ),
               ),
             ),
-            payment_info()
+            // payment_info()
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
 
-          Item itemData =
-          Item
-            (itemId,
-              itemName,itemPrice,quantity,itemDiscount,itemTax);
-          itemsList.add(itemData);
+
           Invoice invoiceData = Invoice(
               invoiceId,
+              0,
               invoiceName,
               price,
               false,
@@ -965,42 +971,34 @@ class _id_infoState extends ConsumerState<id_info> {
               clientShippingAddress,
               discount,
               shipping,
-              tax, [
-            Item(itemId, itemName, quantity, itemPrice, itemDiscount, itemTax)
-          ]);
+              tax, );
           
           ref.read(invoiceDetailsProvider.notifier).createInvoice(invoiceData);
+          for(var item in itemsList){
+            ref.read(itemDetailsProvider.notifier).createItem(item);
+            ref.read(invoiceDetailsProvider.notifier).getInvoice();
+            print("$item  ui");
+          }
+
           // setState(() {
           //   invoice.add(invoiceData);
           // });
 
 
-          navigateToAddTodoPage(context);
-          print('floating: $invoiceId');
-          print('floating: $createdDate');
-          print('floating: $DueDate');
-          print('floating: $dueTerms');
-          print('floating: $invoiceName');
-          print('floating: $businessName');
-          print('floating: $businessPhone');
-          print('floating: $businessBillingAddress');
-          print('floating: $businessWebsite');
-          print('floating: $businessEmailAddress');
-          print('floating Name: $clientName');
-          print('floating Email: $clientEmailAddress');
-          print('floating Phone: $clientPhone');
-          print('floating Billing Address: $clientBillingAddress');
-          print('floating Shipping Address: $clientShippingAddress');
-          print('floating discount:$discount');
-          print('floating tax:$tax');
-         print('item:$itemsList');
+          navigateToAddTodoPage(context,itemsList);
+
         },
         // The add symbol
         backgroundColor: Colors.blue[900],
 
         shape: const CircleBorder(),
-        child:
-            const Icon(Icons.send_outlined), // Background color of the button
+        child: const Icon(
+          Icons.send_outlined,
+          color: Colors.white, // Set the icon color to white
+        ),
+
+
+
       ),
     );
   }

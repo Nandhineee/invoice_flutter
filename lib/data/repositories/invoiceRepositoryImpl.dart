@@ -8,9 +8,14 @@ class InvoiceRepositoryImpl extends InvoiceRepository {
 
   InvoiceRepositoryImpl(this.invoiceDataSource);
 
+
+
+
+
+
   @override
   Future<bool> invoice(Invoice invoice) async {
-
+      print(invoice);
 
     bool? result = await invoiceDataSource.insertInvoiceData( invoice);
 
@@ -20,5 +25,26 @@ class InvoiceRepositoryImpl extends InvoiceRepository {
       return false;
     }
   }
+
+  @override
+  Future<List<Invoice>?> getInvoice() async {
+List<Invoice>? result= await invoiceDataSource.getInvoice();
+if(result!.isNotEmpty) {
+  print("$result  impl");
+  return result;
+
+}
+return null;
+
+}
+
+  @override
+  Future<void> deleteInvoice(String inId) async {
+    await invoiceDataSource.deleteInvoiceById(inId );
+    print("$inId impl");
+
   }
+  }
+
+
 

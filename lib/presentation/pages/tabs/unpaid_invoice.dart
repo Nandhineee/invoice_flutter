@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:invoice/domain/models/invoice_list.dart';
+import 'package:invoice/presentation/providers/invoiceProvider.dart';
 
-class unpaid extends StatefulWidget {
+class unpaid extends ConsumerStatefulWidget {
   const unpaid({super.key});
 
   @override
-  State<unpaid> createState() => _unpaidState();
+  ConsumerState <unpaid> createState() => _unpaidState();
 }
 
-class _unpaidState extends State<unpaid> {
-  late List<Invoice> invoices;
+class _unpaidState extends ConsumerState<unpaid> {
+  late List<Invoice> unpaidInvoices=[];
+
+
 
   @override
+
   void initState() {
+
+    unpaidInvoices = ref.read(invoiceDetailsProvider.notifier).getUnPaidInvoices(false);
+
     super.initState();
-    invoices = invoice;
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: invoice.length,
+            itemCount: unpaidInvoices.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.all(8.0),
@@ -63,13 +72,13 @@ class _unpaidState extends State<unpaid> {
                             // Align text to the start of the column
                             children: <Widget>[
                               Text(
-                                invoice[index].invoiceName,
-                                style: TextStyle(
+                                unpaidInvoices[index].invoiceName,
+                                style: const  TextStyle(
                                   fontSize: 20.0, // Size of the first text
                                 ),
                               ),
                               Text(
-                                invoice[index].invoiceId,
+                                unpaidInvoices[index].id,
                                 // Your additional text
                                 style: const TextStyle(
                                   fontSize:
@@ -84,17 +93,28 @@ class _unpaidState extends State<unpaid> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.edit, // Edit icon
-                              size: 20.0, // Adjust the size as per your need
-                              color: Colors.black, // Adjust the color as per your need
+                            child: IconButton(
+                              icon: const  Icon(
+                                Icons.delete,
+                                size: 20.0,
+                                color: Colors.black,
+                              ),
+                              onPressed: () async {
+                                await ref.read(invoiceDetailsProvider.notifier).deleteById(unpaidInvoices[index].id);
+                                await ref.read(invoiceDetailsProvider.notifier).getInvoices();
+
+                                setState(() {
+
+                                });
+
+                              },
                             ),
                           ),
 
                           Padding(
                             padding: const EdgeInsets.only(),
                             child: Text(
-                              '₹${invoice[index].price.toString()}',
+                              '₹${unpaidInvoices[index].price.toString()}',
                               style: const TextStyle(
                                 fontSize: 15.0, // You can adjust the size as per your need
                               ),
@@ -113,5 +133,6 @@ class _unpaidState extends State<unpaid> {
         ),
       ],
     );
+
   }
 }

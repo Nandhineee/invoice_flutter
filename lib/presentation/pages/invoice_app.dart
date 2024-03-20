@@ -99,11 +99,12 @@ class _TestAppState extends State<TestApp> with SingleTickerProviderStateMixin {
           );
           print('Floating Action Button Pressed');
         },
-         // The add symbol
-        backgroundColor: Colors.blue[900],
-
+        backgroundColor: Colors.blue[900], // Background color of the button
         shape: const CircleBorder(),
-        child:  const Icon(Icons.add),// Background color of the button
+        child: const Icon(
+          Icons.add,
+          color: Colors.white, // Set the icon color to white
+        ),
       ),
 
     );

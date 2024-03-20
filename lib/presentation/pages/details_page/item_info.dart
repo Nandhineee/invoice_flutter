@@ -4,7 +4,7 @@ import 'package:invoice/presentation/widgets/new_invoice_details/id_invoice_page
 class item_info extends StatefulWidget {
   const item_info({super.key, required this.itemId, required this.itemName, required this.quantity,required this.itemPrice, required this.itemDiscount, required this.itemTax});
 
- final String itemId;
+ final num itemId;
  final String itemName;
   final num itemPrice;
  final num quantity;
@@ -18,7 +18,7 @@ class item_info extends StatefulWidget {
 class _item_infoState extends State<item_info> {
   final _formKey = GlobalKey<FormState>();
 
-  late String itemId;
+  late num itemId;
   late String itemName;
   late num itemPrice;
   late num quantity;

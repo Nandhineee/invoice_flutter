@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/models/invoice_list.dart';
+import '../../domain/models/item.dart';
 
 class DatabaseHelper {
   static Database? database;
@@ -17,8 +18,9 @@ class DatabaseHelper {
       return database!;
     }
     database = await initDatabase();
-     loadUserDetails();
-     loadInvoiceDetails();
+      // loadUserDetails();
+      // loadInvoiceDetails();
+      // loadItemDetails();
     return database!;
   }
 
@@ -51,11 +53,24 @@ class DatabaseHelper {
     for (Invoice invoiceDetails in invoice) {
       print(invoiceDetails);
       if (db != null) {
-        await db.insert(UserTableName, invoiceDetails.toJson());
+        await db.insert(invoiceTableName, invoiceDetails.toJson());
+
       } else {
       }
     }
   }
+
+  Future<void> loadItemDetails() async {
+    Database? db = DatabaseHelper.database;
+    for (Item itemDetails in item) {
+      print("$itemDetails loading");
+      if (db != null) {
+        await db.insert(itemTableName, itemDetails.toJson());
+      } else {
+      }
+    }
+  }
+
 
 
   Future _onCreate(Database db, int version) async {
@@ -63,7 +78,9 @@ class DatabaseHelper {
         '''CREATE TABLE $UserTableName ($userId INTEGER PRIMARY KEY,$userPassword TEXT,
         $userName TEXT,$userEmail TEXT);''');
     await db.execute('''CREATE TABLE $invoiceTableName( 
-      $invoiceTableId INTEGER PRIMARY KEY,
+      $invoiceId TEXT,
+            $invoiceTableId INTEGER PRIMARY KEY AUTOINCREMENT,
+
       $invoiceCreateName TEXT,
       $invoicePrice TEXT ,
       $invoicePaid INTEGER,
@@ -83,6 +100,18 @@ class DatabaseHelper {
       $invoiceDiscount TEXT,
       $invoiceTax TEXT,
       $invoiceShipping TEXT);''');
+
+
+    await db.execute(
+        '''CREATE TABLE $itemTableName ($invoiceId TEXT ,$itemId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $itemName TEXT,$itemPrice INTEGER,$itemQuantity INTEGER,$itemDiscount INTEGER,
+        $itemTax INTEGER,
+        FOREIGN KEY (invoiceId) REFERENCES $invoiceTableName($invoiceId));''');
   }
+
+
+
+
+
 
 }

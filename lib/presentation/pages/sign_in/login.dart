@@ -236,6 +236,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:invoice/domain/models/user.dart';
 import 'package:invoice/presentation/pages/sign_in/register.dart';
+import 'package:invoice/presentation/providers/invoiceProvider.dart';
 import 'package:invoice/presentation/providers/userProvider.dart';
 import 'package:lottie/lottie.dart'; // Assuming you have Lottie animations
 import 'package:invoice/presentation/pages/invoice_app.dart'; // Make sure this path is correct
@@ -363,7 +364,7 @@ class _LoginState extends ConsumerState<Login> {
                             authUserDetailsProvider.notifier);
 
                         if (authUser.getAuthUserDetails() is User) {
-                          // Navigate to TestApp if the user is successfully authenticated
+                         await ref.read(invoiceDetailsProvider.notifier).getInvoice();
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (

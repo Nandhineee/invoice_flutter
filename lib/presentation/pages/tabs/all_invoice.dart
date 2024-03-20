@@ -1,21 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:invoice/domain/models/invoice_list.dart';
+import 'package:invoice/presentation/providers/invoiceProvider.dart';
 
-class all extends StatefulWidget {
+class all extends ConsumerStatefulWidget {
   const all({super.key});
 
   @override
-  State<all> createState() => _allState();
+  ConsumerState<all> createState() => _allState();
 }
 
-class _allState extends State<all> {
-  late List<Invoice> invoices;
+class _allState extends ConsumerState<all> {
+  late List<Invoice> invoiceData=[];
+
+
+
+
 
   @override
   void initState() {
     super.initState();
-    invoices = invoice;
+    ref.read(invoiceDetailsProvider.notifier).getInvoice();
+    invoiceData=
+        ref.read(invoiceDetailsProvider.notifier).getInvoices();
+    setState(() {
+      ref.read(invoiceDetailsProvider.notifier).getInvoice();
+    });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +36,8 @@ class _allState extends State<all> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: invoice.length,
+
+            itemCount: invoiceData.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.all(8.0),
@@ -64,17 +78,17 @@ class _allState extends State<all> {
                             // Align text to the start of the column
                             children: <Widget>[
                               Text(
-                                invoice[index].invoiceName,
+                                invoiceData[index].invoiceName,
                                 style: TextStyle(
                                   fontSize: 20.0, // Size of the first text
                                 ),
                               ),
                               Text(
-                                invoice[index].invoiceId,
+                                invoiceData[index].id,
                                 // Your additional text
                                 style: const TextStyle(
                                   fontSize:
-                                      20.0, // Adjust the size as per your need
+                                  20.0, // Adjust the size as per your need
                                 ),
                               ),
                             ],
@@ -85,17 +99,34 @@ class _allState extends State<all> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Icon(
-                              Icons.edit, // Edit icon
-                              size: 20.0, // Adjust the size as per your need
-                              color: Colors.black, // Adjust the color as per your need
+                            child: IconButton(
+                              icon: const  Icon(
+                                Icons.delete,
+                                size: 20.0,
+                                color: Colors.black,
+                              ),
+                              onPressed: () async {
+
+
+
+
+                                await ref.read(invoiceDetailsProvider.notifier).deleteById(invoiceData[index].id);
+                                await ref.read(invoiceDetailsProvider.notifier).getInvoice();
+                                invoiceData=
+                                    ref.read(invoiceDetailsProvider.notifier).getInvoices();
+                                setState(() {
+
+                                });
+
+                              },
                             ),
                           ),
+
 
                           Padding(
                             padding: const EdgeInsets.only(),
                             child: Text(
-                              '₹${invoice[index].price.toString()}',
+                              '₹${invoiceData[index].price.toString()}',
                               style: const TextStyle(
                                 fontSize: 15.0, // You can adjust the size as per your need
                               ),
