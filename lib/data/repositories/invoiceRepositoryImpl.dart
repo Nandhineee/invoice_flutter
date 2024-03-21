@@ -30,7 +30,6 @@ class InvoiceRepositoryImpl extends InvoiceRepository {
   Future<List<Invoice>?> getInvoice() async {
 List<Invoice>? result= await invoiceDataSource.getInvoice();
 if(result!.isNotEmpty) {
-  print("$result  impl");
   return result;
 
 }

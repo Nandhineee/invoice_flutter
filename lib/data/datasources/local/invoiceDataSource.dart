@@ -49,7 +49,7 @@ class InvoiceDataSource{
       List<Map<String, dynamic>> result =
       await dbClient.rawQuery("select * from $invoiceTableName");
       for (var res in result) {
-         print("$res tableinsert");
+
         invoices.add(Invoice.fromJson(res));
       }
       return invoices;

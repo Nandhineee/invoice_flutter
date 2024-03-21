@@ -74,6 +74,7 @@ flutter:
   - assets/animations/login_invoice.json
   - assets/animations/invoice_first.json
   - assets/animations/register_invoice.json
+  - assets/images/login_Image.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

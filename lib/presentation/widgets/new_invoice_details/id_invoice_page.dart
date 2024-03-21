@@ -373,10 +373,10 @@ class _id_infoState extends ConsumerState<id_info> {
                                 ),
                                 const Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  // Adjusted to start for alignment
+
                                   children: [
-                                    SizedBox(width: 3.0),
-                                    // Offset to align text under the first one
+                                    SizedBox(width: 2.0),
+
                                     Text('Add Business'),
                                   ],
                                 ),
@@ -413,8 +413,8 @@ class _id_infoState extends ConsumerState<id_info> {
                                         ),
                                       ),
                                     ),
-                                    // Bold text label
-                                    Spacer(),
+                                    // // Bold text label
+                                     Spacer(),
                                     // This pushes the IconButton to the far right
                                     IconButton(
                                       icon: Icon(Icons.arrow_forward_ios,

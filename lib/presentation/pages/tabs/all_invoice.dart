@@ -16,22 +16,30 @@ class _allState extends ConsumerState<all> {
 
 
 
-
-  @override
-  void initState() {
-    super.initState();
-    ref.read(invoiceDetailsProvider.notifier).getInvoice();
-    invoiceData=
-        ref.read(invoiceDetailsProvider.notifier).getInvoices();
-    setState(() {
-      ref.read(invoiceDetailsProvider.notifier).getInvoice();
-    });
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   ref.read(invoiceDetailsProvider.notifier).getInvoice();
+  //   invoiceData=
+  //       ref.read(invoiceDetailsProvider.notifier).getInvoices();
+  //   setState(() {
+  //     ref.read(invoiceDetailsProvider.notifier).getInvoice();
+  //   });
+  // }
+  loadData(){
+       ref.read(invoiceDetailsProvider.notifier).getInvoice();
+      invoiceData=
+         ref.read(invoiceDetailsProvider.notifier).getInvoices();
   }
 
 
 
   @override
   Widget build(BuildContext context) {
+
+   ref.watch(invoiceDetailsProvider);
+ loadData();
     return Row(
       children: [
         Expanded(

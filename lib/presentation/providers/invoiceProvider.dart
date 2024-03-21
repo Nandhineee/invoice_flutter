@@ -35,13 +35,12 @@ class InvoiceDetailsNotifier extends StateNotifier<List<Invoice>>{
 
   Future<void> getInvoice()async {
     state = (await invoiceRepository.getInvoice())!;
-    print("$state getinvoice");
+
   }
 
 
 
   getInvoices(){
-    print("$state  testing");
     return state;
   }
 
@@ -56,10 +55,17 @@ class InvoiceDetailsNotifier extends StateNotifier<List<Invoice>>{
   }
 
 
-  Future<void> deleteById(String inId) async{
+  // Future<void> deleteById(String inId) async{
+  //   await invoiceRepository.deleteInvoice(inId);
+  //   print("$inId  provider");
+  // }
+
+  Future<void> deleteById(String inId) async {
     await invoiceRepository.deleteInvoice(inId);
-    print("$inId  provider");
+    // Fetch the updated list of invoices after deletion
+    await getInvoice();
   }
+
 
 
 

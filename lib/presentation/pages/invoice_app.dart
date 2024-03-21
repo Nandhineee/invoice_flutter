@@ -96,7 +96,9 @@ class _TestAppState extends State<TestApp> with SingleTickerProviderStateMixin {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CreateScreen()),
-          );
+          ).then((value) => setState(() {
+            print("hahahaa");
+          }));
           print('Floating Action Button Pressed');
         },
         backgroundColor: Colors.blue[900], // Background color of the button

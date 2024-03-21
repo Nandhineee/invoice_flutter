@@ -235,12 +235,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:invoice/domain/models/user.dart';
-import 'package:invoice/presentation/pages/sign_in/register.dart';
 import 'package:invoice/presentation/providers/invoiceProvider.dart';
 import 'package:invoice/presentation/providers/userProvider.dart';
-import 'package:lottie/lottie.dart'; // Assuming you have Lottie animations
-import 'package:invoice/presentation/pages/invoice_app.dart'; // Make sure this path is correct
-import 'package:invoice/presentation/pages/sign_in/register.dart'; // Correct the import path for register_page
+import 'package:invoice/presentation/pages/invoice_app.dart';
+
 
 class Login extends ConsumerStatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -262,16 +260,16 @@ class _LoginState extends ConsumerState<Login> {
   }
 
   bool _validateEmail(String email) {
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
     return emailRegex.hasMatch(email);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> logincredentials = {'nandhini@gmail.com': 'nandhini@123'};
+
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
@@ -286,17 +284,20 @@ class _LoginState extends ConsumerState<Login> {
               Padding(
                 padding: const EdgeInsets.only(top: 60.0),
                 child: Center(
-                  child: Container(
+                  child:  SizedBox(
+
                     width: 200,
                     height: 150,
-                    // Optionally, add a logo or Lottie animation here
+
+                    child: Image.asset('assets/images/login_Image.png', fit: BoxFit.fill),
+
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 120),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.email),
@@ -310,14 +311,14 @@ class _LoginState extends ConsumerState<Login> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _passwordController,
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -341,8 +342,8 @@ class _LoginState extends ConsumerState<Login> {
               Padding(
                 padding: const EdgeInsets.only(top: 50),
                 child: Container(
-                  height: 50,
-                  width: 250,
+                  height: 50, // Reduced from 50 to 40
+                  width: 70, // Reduced from 250 to 200
                   decoration: BoxDecoration(
                       color: Colors.green, borderRadius: BorderRadius.circular(20)),
                   child: ElevatedButton(
@@ -351,11 +352,10 @@ class _LoginState extends ConsumerState<Login> {
                       shadowColor: Colors.transparent,
                     ),
                     onPressed: () async {
-
+                      // Button action remains unchanged
                       if (_formKey.currentState!.validate()) {
                         final String email = _emailController.text;
                         final String password = _passwordController.text;
-
 
                         await ref
                             .read(authUserDetailsProvider.notifier)
@@ -364,28 +364,27 @@ class _LoginState extends ConsumerState<Login> {
                             authUserDetailsProvider.notifier);
 
                         if (authUser.getAuthUserDetails() is User) {
-                         await ref.read(invoiceDetailsProvider.notifier).getInvoice();
+                          await ref.read(invoiceDetailsProvider.notifier).getInvoice();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (
-                                context) => const TestApp()),
+                            MaterialPageRoute(builder: (context) => const TestApp()),
                           );
                         } else {
-                          print("error");
 
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Invalid credentials')),
+                            const SnackBar(content: Text('Invalid credentials')),
                           );
                         }
                       }
                     },
                     child: const Text(
                       'Login',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
+                      style: TextStyle(color: Colors.white, fontSize: 20), // Reduced fontSize from 25 to 20
                     ),
                   ),
                 ),
               ),
+
               // Padding(
               //   padding: const EdgeInsets.only(top: 10, bottom: 200),
               //   child: TextButton(

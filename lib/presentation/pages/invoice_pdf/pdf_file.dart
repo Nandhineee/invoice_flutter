@@ -261,7 +261,7 @@ print("$itemsList   pdf");
     return Scaffold(appBar: AppBar(
       title:const  Text(
         'Invoice Details',
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white, // Set your desired color here
         ),
       ),
@@ -280,56 +280,7 @@ print("$itemsList   pdf");
                   SizedBox(height: 10),
                   Text('Date: ${DateTime.now().toString().split(' ')[0]}'),
                   SizedBox(height: 20),
-                  Divider(),
-                  Text(
-                    'Client Name: $clientName',
-                    style:  const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
 
-                  Text('clientPhone: $clientPhone',
-
-                    style:  const TextStyle(
-                      fontSize: 16,
-
-                    ),
-                  ),
-
-                  Text('clientEmail: $clientEmailAddress',
-
-                    style:  const TextStyle(
-                      fontSize: 16,
-
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Divider(),
-                  Text(
-                    'Business Website: $businessWebsite',
-                    style:  const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  Text('Business Email: $businessEmailAddress',
-
-                    style:  const TextStyle(
-                      fontSize: 16,
-
-                    ),
-                  ),
-
-                  Text('Business Address: $businessBillingAddress',
-
-                    style:  const TextStyle(
-                      fontSize: 16,
-
-                    ),
-                  ),
-                  SizedBox(height: 20),
                   Divider(),
                   Text('Items', style: Theme.of(context).textTheme.headline6),
                   SizedBox(height: 10),
